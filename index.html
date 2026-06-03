@@ -393,6 +393,128 @@
       place-items: center;
     }
 
+    .final-hero-card-stack {
+      position: absolute;
+      inset: 10% 2% auto auto;
+      width: min(430px, 92%);
+      height: 390px;
+      z-index: 2;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      pointer-events: none;
+    }
+
+    .final-stack-card {
+      position: absolute;
+      width: 320px;
+      min-height: 190px;
+      padding: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 14px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025)),
+        rgba(12, 15, 22, 0.88);
+      box-shadow: 0 26px 70px rgba(0, 0, 0, 0.38);
+      backdrop-filter: blur(18px);
+      opacity: 0;
+      filter: blur(10px);
+      transform: translate3d(0, 42px, 0) scale(0.94);
+      overflow: hidden;
+    }
+
+    .final-stack-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, transparent 36%, rgba(255, 255, 255, 0.18) 48%, transparent 62%);
+      transform: translateX(-130%);
+    }
+
+    .final-stack-card--primary {
+      right: 18px;
+      top: 98px;
+      z-index: 4;
+    }
+
+    .final-stack-card--secondary {
+      left: 4px;
+      top: 38px;
+      z-index: 3;
+      width: 286px;
+      min-height: 168px;
+      transform: translate3d(-24px, 48px, 0) rotate(-7deg) scale(0.9);
+      opacity: 0;
+    }
+
+    .final-stack-card--tertiary {
+      right: 0;
+      top: 0;
+      z-index: 2;
+      width: 264px;
+      min-height: 148px;
+      transform: translate3d(26px, 54px, 0) rotate(7deg) scale(0.88);
+      opacity: 0;
+    }
+
+    .final-page.is-ready .final-stack-card--tertiary {
+      animation: finalStackTertiaryIn 760ms cubic-bezier(0.2, 0.8, 0.2, 1) 240ms forwards;
+    }
+
+    .final-page.is-ready .final-stack-card--secondary {
+      animation: finalStackSecondaryIn 800ms cubic-bezier(0.2, 0.8, 0.2, 1) 360ms forwards;
+    }
+
+    .final-page.is-ready .final-stack-card--primary {
+      animation: finalStackPrimaryIn 860ms cubic-bezier(0.2, 0.8, 0.2, 1) 500ms forwards;
+    }
+
+    .final-page.is-ready .final-stack-card::after {
+      animation: finalStackSweep 760ms ease 1050ms 1;
+    }
+
+    .final-stack-eyebrow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      color: var(--final-muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .final-stack-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--final-red);
+      box-shadow: 0 0 18px rgba(253, 49, 46, 0.34);
+    }
+
+    .final-stack-title {
+      margin: 28px 0 0;
+      font-size: 24px;
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+      font-weight: 700;
+    }
+
+    .final-stack-meta {
+      display: grid;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .final-stack-line {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.13);
+    }
+
+    .final-stack-line:nth-child(1) { width: 78%; }
+    .final-stack-line:nth-child(2) { width: 58%; }
+    .final-stack-line:nth-child(3) { width: 68%; }
+
     .final-hero-characters img {
       width: 100%;
       max-height: 520px;
@@ -511,6 +633,7 @@
       grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 18px;
       align-items: stretch;
+      perspective: 1200px;
     }
 
     .final-winner-card {
@@ -528,10 +651,12 @@
         var(--final-surface);
       box-shadow: 0 24px 54px rgba(0, 0, 0, 0.25);
       opacity: 0;
-      transform: translateY(24px);
+      filter: blur(8px);
+      transform: translate3d(0, 42px, 0) scale(0.96);
       transition:
         opacity 620ms ease,
-        transform 620ms cubic-bezier(0.2, 0.8, 0.2, 1),
+        transform 760ms cubic-bezier(0.16, 1, 0.3, 1),
+        filter 760ms ease,
         border-color 620ms ease,
         box-shadow 620ms ease;
     }
@@ -549,11 +674,20 @@
 
     .final-winner-card--rank2 { border-color: rgba(199, 205, 214, 0.34); }
     .final-winner-card--rank3 { border-color: rgba(185, 130, 87, 0.34); }
-    .final-winner-card--special { transform: translateY(16px); }
+    .final-winner-card--rank2 {
+      transform: translate3d(-18px, 46px, 0) rotate(-1.8deg) scale(0.96);
+    }
+
+    .final-winner-card--rank3 {
+      transform: translate3d(18px, 46px, 0) rotate(1.8deg) scale(0.96);
+    }
+
+    .final-winner-card--special { transform: translate3d(0, 34px, 0) scale(0.98); }
 
     .final-winner-card.is-visible {
       opacity: 1;
-      transform: translateY(0);
+      filter: blur(0);
+      transform: translate3d(0, 0, 0) rotate(0) scale(1);
     }
 
     .final-winner-card--rank1.is-visible {
@@ -745,6 +879,25 @@
       100% { opacity: 0; transform: translateY(80px) rotate(88deg); }
     }
 
+    @keyframes finalStackPrimaryIn {
+      0% { opacity: 0; filter: blur(10px); transform: translate3d(0, 42px, 0) scale(0.94); }
+      100% { opacity: 1; filter: blur(0); transform: translate3d(0, 0, 0) scale(1); }
+    }
+
+    @keyframes finalStackSecondaryIn {
+      0% { opacity: 0; filter: blur(10px); transform: translate3d(-24px, 48px, 0) rotate(-7deg) scale(0.9); }
+      100% { opacity: 0.84; filter: blur(0); transform: translate3d(0, 0, -60px) rotate(-5deg) scale(0.93); }
+    }
+
+    @keyframes finalStackTertiaryIn {
+      0% { opacity: 0; filter: blur(10px); transform: translate3d(26px, 54px, 0) rotate(7deg) scale(0.88); }
+      100% { opacity: 0.62; filter: blur(0); transform: translate3d(0, 0, -120px) rotate(5deg) scale(0.86); }
+    }
+
+    @keyframes finalStackSweep {
+      to { transform: translateX(130%); }
+    }
+
     @keyframes finalGoldGlow {
       0%, 100% { box-shadow: 0 24px 54px rgba(0, 0, 0, 0.25), 0 0 0 rgba(245, 215, 122, 0); }
       42% { box-shadow: 0 24px 54px rgba(0, 0, 0, 0.25), 0 0 42px rgba(245, 215, 122, 0.20); }
@@ -780,6 +933,20 @@
         min-height: 300px;
         width: min(330px, 86%);
       }
+      .final-hero-card-stack {
+        position: relative;
+        inset: auto;
+        width: min(360px, 100%);
+        height: 330px;
+      }
+      .final-stack-card {
+        width: 270px;
+        min-height: 160px;
+        padding: 18px;
+      }
+      .final-stack-card--secondary { width: 244px; }
+      .final-stack-card--tertiary { width: 224px; }
+      .final-stack-title { font-size: 20px; }
       .final-section-head {
         grid-template-columns: 1fr;
         align-items: start;
@@ -838,6 +1005,7 @@
       .final-winner-card,
       .final-hero,
       .final-hero-visual,
+      .final-stack-card,
       .final-announcement-text,
       .final-trophy-wrap {
         opacity: 1;
@@ -902,6 +1070,42 @@
             <div class="final-confetti" aria-hidden="true">
               <span></span><span></span><span></span><span></span>
               <span></span><span></span><span></span><span></span>
+            </div>
+            <div class="final-hero-card-stack" aria-hidden="true">
+              <div class="final-stack-card final-stack-card--tertiary">
+                <div class="final-stack-eyebrow">
+                  <span>FINALIST</span>
+                  <span class="final-stack-dot"></span>
+                </div>
+                <div class="final-stack-title">Special Award</div>
+                <div class="final-stack-meta">
+                  <span class="final-stack-line"></span>
+                  <span class="final-stack-line"></span>
+                </div>
+              </div>
+              <div class="final-stack-card final-stack-card--secondary">
+                <div class="final-stack-eyebrow">
+                  <span>TOP 3</span>
+                  <span class="final-stack-dot"></span>
+                </div>
+                <div class="final-stack-title">우수 아이디어 선정</div>
+                <div class="final-stack-meta">
+                  <span class="final-stack-line"></span>
+                  <span class="final-stack-line"></span>
+                </div>
+              </div>
+              <div class="final-stack-card final-stack-card--primary">
+                <div class="final-stack-eyebrow">
+                  <span>WINNER REVEAL</span>
+                  <span class="final-stack-dot"></span>
+                </div>
+                <div class="final-stack-title">최종 심사 결과<br>공개 준비 완료</div>
+                <div class="final-stack-meta">
+                  <span class="final-stack-line"></span>
+                  <span class="final-stack-line"></span>
+                  <span class="final-stack-line"></span>
+                </div>
+              </div>
             </div>
             <div class="final-hero-characters">
               <span class="final-character-fallback"></span>
