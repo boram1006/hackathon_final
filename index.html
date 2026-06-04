@@ -46,6 +46,9 @@
             padding: 0 40px;
         }
 
+        /* ─────────────────────────────────
+           HERO
+        ───────────────────────────────── */
         .hero {
             height: 100vh;
             display: flex;
@@ -54,6 +57,28 @@
             align-items: center;
             text-align: center;
             border-bottom: 0.5px solid var(--border);
+            position: relative;
+            /* 중앙 집중 골드 스포트라이트 */
+            background: radial-gradient(ellipse 70% 55% at 50% 42%, rgba(212, 175, 55, 0.08) 0%, transparent 65%);
+        }
+
+        /* 연도 워터마크 */
+        .hero::after {
+            content: '2026';
+            position: absolute;
+            font-family: var(--serif);
+            font-size: clamp(180px, 28vw, 380px);
+            font-weight: 600;
+            color: var(--text);
+            opacity: 0.025;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            user-select: none;
+            white-space: nowrap;
+            z-index: 0;
+            letter-spacing: -0.05em;
         }
 
         .hero-meta {
@@ -63,8 +88,28 @@
             color: var(--gold);
             margin-bottom: 2rem;
             opacity: 0.8;
+            /* 양쪽 장식선 */
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-meta::before,
+        .hero-meta::after {
+            content: '';
+            width: 32px;
+            height: 0.5px;
+            background: var(--gold);
+            opacity: 0.6;
+            flex-shrink: 0;
         }
 
+        /* 타이틀 골드 shimmer */
+        @keyframes goldShimmer {
+            0%   { background-position: 200% center; }
+            100% { background-position: -200% center; }
+        }
         .hero-title {
             font-family: var(--serif);
             font-size: clamp(3rem, 8vw, 6rem);
@@ -73,6 +118,22 @@
             max-width: 1000px;
             margin-bottom: 2rem;
             letter-spacing: -0.02em;
+            background: linear-gradient(
+                90deg,
+                var(--text) 20%,
+                var(--text) 35%,
+                var(--gold-bright) 50%,
+                var(--text) 65%,
+                var(--text) 80%
+            );
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: goldShimmer 10s linear infinite;
+            position: relative;
+            z-index: 1;
         }
 
         .hero-sub {
@@ -81,6 +142,8 @@
             color: var(--text-dim);
             line-height: 1.6;
             letter-spacing: 0.05em;
+            position: relative;
+            z-index: 1;
         }
 
         .scroll-indicator {
@@ -92,14 +155,42 @@
             flex-direction: column;
             align-items: center;
             gap: 12px;
+            z-index: 1;
         }
 
+        @keyframes scrollPulse {
+            0%, 100% { transform: scaleY(1); opacity: 1; }
+            50%       { transform: scaleY(0.35); opacity: 0.25; }
+        }
         .scroll-line {
             width: 1px;
             height: 60px;
             background: linear-gradient(to bottom, var(--gold), transparent);
+            transform-origin: top;
+            animation: scrollPulse 2.6s ease-in-out infinite;
         }
 
+        /* ─────────────────────────────────
+           SECTION HEADER
+        ───────────────────────────────── */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 64px;
+            padding-bottom: 18px;
+            border-bottom: 0.5px solid rgba(212, 175, 55, 0.12);
+        }
+        .section-header span {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.38em;
+            color: var(--text-dim);
+        }
+
+        /* ─────────────────────────────────
+           AWARD SECTION & GRID
+        ───────────────────────────────── */
         .award-section {
             padding: 120px 0;
         }
@@ -134,6 +225,58 @@
             background: rgba(13, 13, 13, 0.5);
             backdrop-filter: blur(10px);
             overflow: hidden;
+            transition: box-shadow 0.5s ease, border-color 0.5s ease;
+        }
+        .award-card:hover {
+            box-shadow: 0 0 60px -20px rgba(212, 175, 55, 0.18);
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+
+        /* 카드 배경 ghost 번호 */
+        .award-card::before {
+            content: attr(data-num);
+            position: absolute;
+            right: 10px;
+            bottom: -50px;
+            font-family: var(--serif);
+            font-size: 240px;
+            font-weight: 600;
+            color: var(--text);
+            opacity: 0.045;
+            line-height: 1;
+            pointer-events: none;
+            user-select: none;
+            z-index: 0;
+            letter-spacing: -0.05em;
+        }
+
+        /* Grand Prix 전용 스타일 */
+        .full-width .award-card {
+            border-left: 2px solid rgba(212, 175, 55, 0.55);
+            background: rgba(16, 13, 8, 0.65);
+            box-shadow:
+                0 0 100px -30px rgba(212, 175, 55, 0.22),
+                inset 0 0 80px -40px rgba(212, 175, 55, 0.06);
+        }
+        .full-width .award-card:hover {
+            box-shadow:
+                0 0 130px -20px rgba(212, 175, 55, 0.32),
+                inset 0 0 80px -40px rgba(212, 175, 55, 0.08);
+            border-color: rgba(212, 175, 55, 0.7);
+            border-left-color: rgba(212, 175, 55, 0.85);
+        }
+        .full-width .card-title {
+            font-size: clamp(3rem, 5.5vw, 5rem);
+        }
+        /* Grand Prix 타이틀 하단 골드 언더라인 */
+        .full-width .card-title::after {
+            content: '';
+            display: block;
+            width: 48px;
+            height: 1px;
+            background: linear-gradient(to right, var(--gold), transparent);
+            margin-top: 18px;
+            opacity: 0.65;
         }
 
         .curtain {
@@ -163,6 +306,7 @@
             letter-spacing: 0.1em;
             text-transform: uppercase;
             margin-bottom: 24px;
+            box-shadow: 0 2px 24px -6px rgba(255, 255, 255, 0.25);
         }
 
         .card-header {
@@ -172,11 +316,23 @@
             margin-bottom: 40px;
         }
 
+        /* 번호 앞 장식선 */
         .card-meta-left {
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 0.2em;
             color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card-meta-left::before {
+            content: '';
+            display: inline-block;
+            width: 18px;
+            height: 0.5px;
+            background: currentColor;
+            flex-shrink: 0;
         }
 
         .card-title {
@@ -184,6 +340,8 @@
             font-size: clamp(2rem, 4vw, 3.5rem);
             margin-bottom: 10px;
             line-height: 1.1;
+            position: relative;
+            z-index: 1;
         }
 
         .card-desc {
@@ -191,6 +349,8 @@
             color: var(--text-dim);
             margin-bottom: 30px;
             max-width: 600px;
+            position: relative;
+            z-index: 1;
         }
 
         .thumbnail-container {
@@ -200,6 +360,7 @@
             position: relative;
             margin-bottom: 30px;
             border: 0.5px solid rgba(255,255,255,0.1);
+            z-index: 1;
         }
 
         .thumbnail-image {
@@ -209,8 +370,19 @@
             position: absolute;
             top: -5%;
             left: -5%;
-            transition: transform 0.4s ease-out;
+            transition: transform 0.4s ease-out, filter 0.4s ease;
             filter: saturate(0.2) contrast(1.1) brightness(0.8);
+        }
+
+        /* 썸네일 하단 그라디언트 오버레이 */
+        .thumbnail-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 45%;
+            background: linear-gradient(to top, rgba(8,8,8,0.75) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: 1;
         }
 
         .thumbnail-container:hover .thumbnail-image {
@@ -221,6 +393,8 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
+            position: relative;
+            z-index: 1;
         }
 
         .team-info {
@@ -242,6 +416,9 @@
             font-weight: 300;
         }
 
+        /* ─────────────────────────────────
+           BUTTON: 좌→우 wipe 애니메이션
+        ───────────────────────────────── */
         .btn-gold {
             display: inline-block;
             padding: 14px 28px;
@@ -251,21 +428,49 @@
             text-transform: uppercase;
             font-size: 11px;
             letter-spacing: 0.2em;
-            transition: all 0.4s;
             position: relative;
             overflow: hidden;
+            transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        .btn-gold:hover {
+        .btn-gold::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -105%;
+            width: 100%;
+            height: 100%;
             background: var(--gold);
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-gold:hover {
             color: #000;
         }
+        .btn-gold:hover::before {
+            left: 0;
+        }
 
+        /* ─────────────────────────────────
+           ORNAMENT: 중앙 ✦ 심볼
+        ───────────────────────────────── */
         .ornament {
             width: 100%;
             height: 0.5px;
             background: linear-gradient(to right, transparent, var(--border), transparent);
             margin: 80px 0;
+            position: relative;
+        }
+        .ornament::after {
+            content: '✦';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--gold);
+            font-size: 9px;
+            background: var(--bg);
+            padding: 0 18px;
+            opacity: 0.65;
+            line-height: 1;
         }
 
         @media (max-width: 900px) {
@@ -291,9 +496,14 @@
         </section>
 
         <section class="award-section">
+            <div class="section-header">
+                <span>Award Recipients</span>
+                <span>Class of 2026</span>
+            </div>
+
             <div class="award-card-wrapper full-width">
                 <div class="curtain"></div>
-                <div class="award-card">
+                <div class="award-card" data-num="01">
                     <div class="card-header">
                         <div class="card-meta-left">№ 001 / PRESTIGE LEVEL</div>
                         <div class="award-badge">Grand Prix</div>
@@ -318,7 +528,7 @@
             <div class="grid">
                 <div class="award-card-wrapper">
                     <div class="curtain"></div>
-                    <div class="award-card">
+                    <div class="award-card" data-num="02">
                         <div class="card-header">
                             <div class="card-meta-left">№ 002</div>
                             <div class="award-badge" style="background: #C0C0C0;">Silver Award</div>
@@ -340,7 +550,7 @@
 
                 <div class="award-card-wrapper">
                     <div class="curtain"></div>
-                    <div class="award-card">
+                    <div class="award-card" data-num="03">
                         <div class="card-header">
                             <div class="card-meta-left">№ 003</div>
                             <div class="award-badge" style="background: #CD7F32; color: #fff;">Bronze Award</div>
@@ -364,7 +574,7 @@
             <div class="grid" style="margin-top: 60px;">
                 <div class="award-card-wrapper">
                     <div class="curtain"></div>
-                    <div class="award-card">
+                    <div class="award-card" data-num="04">
                         <div class="card-header">
                             <div class="card-meta-left">№ 004</div>
                             <div class="award-badge" style="background: transparent; color: var(--gold); border: 1px solid var(--gold);">Honorable Mention</div>
@@ -386,7 +596,7 @@
 
                 <div class="award-card-wrapper">
                     <div class="curtain"></div>
-                    <div class="award-card">
+                    <div class="award-card" data-num="05">
                         <div class="card-header">
                             <div class="card-meta-left">№ 005</div>
                             <div class="award-badge" style="background: transparent; color: var(--gold); border: 1px solid var(--gold);">Honorable Mention</div>
@@ -473,6 +683,24 @@
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            // constellation lines
+            ctx.strokeStyle = '#D4AF37';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distSq = dx * dx + dy * dy;
+                    if (distSq < 14400) { // 120px
+                        ctx.globalAlpha = (1 - Math.sqrt(distSq) / 120) * 0.09;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
             particles.forEach(p => {
                 p.update();
                 p.draw();
@@ -488,9 +716,7 @@
         }
         animate();
 
-        const observerOptions = {
-            threshold: 0.2
-        };
+        const observerOptions = { threshold: 0.2 };
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -511,7 +737,6 @@
                 const rect = container.getBoundingClientRect();
                 const x = (e.clientX - rect.left) / rect.width - 0.5;
                 const y = (e.clientY - rect.top) / rect.height - 0.5;
-
                 img.style.transform = `translate(${x * 40}px, ${y * 40}px) scale(1.1)`;
             });
 
