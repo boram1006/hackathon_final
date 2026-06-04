@@ -225,7 +225,8 @@
             margin-bottom: 40px;
             opacity: 0;
             transform: translateY(40px);
-            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .award-card-wrapper.visible {
@@ -238,6 +239,7 @@
             border: 0.5px solid var(--border);
             padding: 40px;
             background: rgba(13, 13, 13, 0.5);
+            -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
             overflow: hidden;
             transition: box-shadow 0.5s ease, border-color 0.5s ease;
@@ -685,7 +687,9 @@
             }
         }
 
-        for (let i = 0; i < 150; i++) {
+        const isMobile = window.innerWidth < 768;
+        const particleCount = isMobile ? 60 : 150;
+        for (let i = 0; i < particleCount; i++) {
             particles.push(new Particle());
         }
 
@@ -698,20 +702,22 @@
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // constellation lines
-            ctx.strokeStyle = '#D4AF37';
-            ctx.lineWidth = 0.5;
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distSq = dx * dx + dy * dy;
-                    if (distSq < 14400) { // 120px
-                        ctx.globalAlpha = (1 - Math.sqrt(distSq) / 120) * 0.09;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
+            // constellation lines (desktop only)
+            if (!isMobile) {
+                ctx.strokeStyle = '#D4AF37';
+                ctx.lineWidth = 0.5;
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const distSq = dx * dx + dy * dy;
+                        if (distSq < 14400) {
+                            ctx.globalAlpha = (1 - Math.sqrt(distSq) / 120) * 0.09;
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
                     }
                 }
             }
