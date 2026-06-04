@@ -58,8 +58,23 @@
             text-align: center;
             border-bottom: 0.5px solid var(--border);
             position: relative;
-            /* 중앙 집중 골드 스포트라이트 */
-            background: radial-gradient(ellipse 70% 55% at 50% 42%, rgba(212, 175, 55, 0.08) 0%, transparent 65%);
+            background-image: url('./assets/hero-spotlight.jpg');
+            background-size: cover;
+            background-position: top center;
+            background-repeat: no-repeat;
+        }
+        /* 이미지 위 어두운 오버레이 — 텍스트 가독성 확보 */
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(8, 8, 8, 0.55) 0%,
+                rgba(8, 8, 8, 0.3) 40%,
+                rgba(8, 8, 8, 0.65) 100%
+            );
+            z-index: 0;
         }
 
         /* 연도 워터마크 */
