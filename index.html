@@ -58,23 +58,28 @@
             text-align: center;
             border-bottom: 0.5px solid var(--border);
             position: relative;
-            background-image: url('./assets/final/96C03019-EE02-4F0B-84F3-05AFD602A467.png');
-            background-size: cover;
-            background-position: top center;
-            background-repeat: no-repeat;
+            /* container 밖으로 100vw 확장 — 이미지 좌우 clipping 방지 */
+            width: 100vw;
+            margin-left: calc(50% - 50vw);
+            /* 오버레이 + 이미지 멀티레이어 */
+            background:
+                linear-gradient(to bottom, rgba(8,8,8,0.5) 0%, rgba(8,8,8,0.18) 40%, rgba(8,8,8,0.62) 100%),
+                url('./assets/final/96C03019-EE02-4F0B-84F3-05AFD602A467.png') top center / cover no-repeat;
         }
-        /* 이미지 위 어두운 오버레이 — 텍스트 가독성 확보 */
+
+        /* 페이지 진입 시 어둠에서 배경 스르륵 등장 */
+        @keyframes bgReveal {
+            0%   { opacity: 1; }
+            100% { opacity: 0; pointer-events: none; }
+        }
         .hero::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(
-                to bottom,
-                rgba(8, 8, 8, 0.55) 0%,
-                rgba(8, 8, 8, 0.3) 40%,
-                rgba(8, 8, 8, 0.65) 100%
-            );
-            z-index: 0;
+            background: var(--bg);
+            z-index: 2;
+            animation: bgReveal 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            pointer-events: none;
         }
 
         /* 연도 워터마크 */
@@ -120,6 +125,22 @@
             flex-shrink: 0;
         }
 
+        /* 콘텐츠 진입 애니메이션 */
+        @keyframes heroReveal {
+            from { opacity: 0; transform: translateY(22px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        /* hero-meta (EST. 2026) — 배경 나온 후 등장 */
+        section.hero > .hero-meta {
+            opacity: 0;
+            animation: heroReveal 1s cubic-bezier(0.16, 1, 0.3, 1) 1.6s forwards;
+        }
+
         /* 타이틀 골드 shimmer */
         @keyframes goldShimmer {
             0%   { background-position: 200% center; }
@@ -148,9 +169,13 @@
             background-clip: text;
             -webkit-text-fill-color: transparent;
             color: transparent;
-            animation: goldShimmer 10s linear infinite;
             position: relative;
             z-index: 1;
+            opacity: 0;
+            /* heroReveal 후 goldShimmer 시작 */
+            animation:
+                heroReveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) 2s forwards,
+                goldShimmer 10s linear 3.4s infinite;
         }
 
         .hero-sub {
@@ -161,6 +186,8 @@
             letter-spacing: 0.05em;
             position: relative;
             z-index: 1;
+            opacity: 0;
+            animation: heroReveal 1s cubic-bezier(0.16, 1, 0.3, 1) 2.6s forwards;
         }
 
         .scroll-indicator {
@@ -173,6 +200,8 @@
             align-items: center;
             gap: 12px;
             z-index: 1;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 3s forwards;
         }
 
         @keyframes scrollPulse {
@@ -184,7 +213,7 @@
             height: 60px;
             background: linear-gradient(to bottom, var(--gold), transparent);
             transform-origin: top;
-            animation: scrollPulse 2.6s ease-in-out infinite;
+            animation: scrollPulse 2.6s ease-in-out 3s infinite;
         }
 
         /* ─────────────────────────────────
